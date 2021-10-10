@@ -1,26 +1,26 @@
 import { AxiosResponse } from 'axios';
 import api from '../../index';
 
-interface createUserRequest {
+interface loginUserRequest {
   email: string;
   password: string;
 }
 
-type createUserResponse = {
+type loginUserResponse = {
   authentication_token: string;
   email: string;
 };
 
-const createUser = async (
-  data: createUserRequest
-): Promise<createUserResponse> => {
+const loginUser = async (
+  data: loginUserRequest
+): Promise<loginUserResponse> => {
   var bodyFormData = new FormData();
   bodyFormData.append('email', data.email);
   bodyFormData.append('password', data.password);
 
   try {
     const response = await api.post<FormData, AxiosResponse>(
-      '/users',
+      '/users/token',
       bodyFormData
     );
     return response.data;
@@ -30,4 +30,4 @@ const createUser = async (
   }
 };
 
-export default createUser;
+export default loginUser;
