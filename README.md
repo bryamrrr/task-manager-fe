@@ -6,7 +6,7 @@ A TODO-like client app made with TS, React and Redux.
 
 To run the project locally:
 
-1. Isntall the project's dependencies: `yarn install`
+1. Install the project's dependencies: `yarn install`
 2. Setup `.env.` file: `cp .env.example .env`
 3. Start the app in development mode: `yarn start`
 

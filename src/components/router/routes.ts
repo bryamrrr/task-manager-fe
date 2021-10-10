@@ -1,9 +1,9 @@
-import { lazy } from 'react';
+import Lists from '../../pages/Lists';
 
 const routes = [
   {
     path: 'lists',
-    component: lazy(() => import('../../pages/Lists')),
+    component: Lists,
     exact: true,
   },
 ];

@@ -1,12 +1,20 @@
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from '../../pages/Login';
 import Register from '../../pages/Register';
+import { useAppSelector } from '../../redux/hooks';
+import { getToken } from '../../utils/storage';
 import PrivateRoute from './PrivateRoute';
 import ProtectedRoutes from './ProtectedRoutes';
 import PublicRoute from './PublicRoute';
 
 function AppRoutes() {
-  const isAuthenticated = false;
+  const currentUser = useAppSelector((state) => state.currentUser);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!getToken());
+
+  useEffect(() => {
+    setIsAuthenticated(!!getToken());
+  }, [currentUser.email]);
 
   return (
     <Router>
