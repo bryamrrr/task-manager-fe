@@ -1,19 +1,25 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import api from '../../api';
 import Login from '../../pages/Login';
 import Register from '../../pages/Register';
 import { useAppSelector } from '../../redux/hooks';
-import { getToken } from '../../utils/storage';
+import { getAuthData } from '../../utils/storage';
 import PrivateRoute from './PrivateRoute';
 import ProtectedRoutes from './ProtectedRoutes';
 import PublicRoute from './PublicRoute';
 
 function AppRoutes() {
   const currentUser = useAppSelector((state) => state.currentUser);
-  const [isAuthenticated, setIsAuthenticated] = useState(!!getToken());
+  const [isAuthenticated, setIsAuthenticated] = useState(!!getAuthData());
 
   useEffect(() => {
-    setIsAuthenticated(!!getToken());
+    const authData = getAuthData();
+    setIsAuthenticated(!!authData);
+    if (authData && api.defaults.headers) {
+      api.defaults.headers['X-User-Token'] = authData.token;
+      api.defaults.headers['X-User-Email'] = authData.email;
+    }
   }, [currentUser.email]);
 
   return (

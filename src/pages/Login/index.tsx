@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import loginUser from '../../api/mutations/loginUser';
 import useUserFormValues from '../../components/hooks/useUserFormValues';
 import { updateCurrentUser } from '../../redux/features/currentUser';
-import { setToken } from '../../utils/storage';
+import { setAuthData } from '../../utils/storage';
 
 function Login() {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ function Login() {
       { email, password },
       {
         onSuccess: ({ authentication_token, email }) => {
-          setToken(authentication_token);
+          setAuthData({ token: authentication_token, email });
           dispatch(updateCurrentUser(email));
         },
       }
