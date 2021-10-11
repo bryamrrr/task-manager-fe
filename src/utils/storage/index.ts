@@ -35,12 +35,26 @@ export function removeItem(key: string) {
   removeLsItem(localStorage, key);
 }
 
-export function setToken(token: string) {
+export function setAuthData({
+  token,
+  email,
+}: {
+  token: string;
+  email: string;
+}) {
   setItem(localStorage, 'token', token);
+  setItem(localStorage, 'email', email);
 }
 
-export function getToken(): string | undefined {
-  return getItem(localStorage, 'token');
+export function getAuthData() {
+  const token = getItem(localStorage, 'token');
+  const email = getItem(localStorage, 'email');
+
+  if (token && email) {
+    return { token, email };
+  }
+
+  return null;
 }
 
 export function removeToken() {
