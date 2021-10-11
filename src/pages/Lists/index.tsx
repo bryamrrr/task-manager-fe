@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
+import createList from '../../api/mutations/createList';
 import getLists from '../../api/queries/getLists';
 import {
   addList,
   addLists,
   listsSelectors,
+  removeList,
   updateList,
 } from '../../redux/features/lists';
 import { useAppSelector, useDispatch } from '../../redux/hooks';
@@ -15,7 +17,15 @@ function Lists() {
   const [editingId, setEditingId] = useState<string | undefined>();
 
   const listsQuery = useQuery('getLists', getLists, {
-    onSuccess: (data) => addLists(data),
+    onSuccess: (data) => dispatch(addLists(data)),
+  });
+
+  const newListMutation = useMutation('newList', createList, {
+    onSuccess: (list) => {
+      console.log({ respnse: list });
+      dispatch(removeList('newId'));
+      dispatch(addList(list));
+    },
   });
 
   const handleAddList = () => {
@@ -24,9 +34,14 @@ function Lists() {
     setEditingId(newListId);
   };
 
-  const handleBlurNewList = () => {
-    setEditingId(undefined);
-    // TODO: Create list on API, and remove/replace list with newListID on redux (on mutation success)
+  const handleBlurNewList = (e: React.FocusEvent<HTMLInputElement>) => {
+    const text = e.target.value.trim();
+    if (text === '') {
+      dispatch(removeList('newId'));
+      setEditingId(undefined);
+    } else {
+      newListMutation.mutate(text);
+    }
   };
 
   const hasZeroItems = !listsQuery.isLoading && lists.length === 0;
