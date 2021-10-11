@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
+import { useHistory } from 'react-router-dom';
 import createList from '../../api/mutations/createList';
 import getLists from '../../api/queries/getLists';
 import {
@@ -13,6 +14,7 @@ import { useAppSelector, useDispatch } from '../../redux/hooks';
 
 function Lists() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const lists = useAppSelector(listsSelectors.selectAll);
   const [editingId, setEditingId] = useState<string | undefined>();
 
@@ -77,7 +79,9 @@ function Lists() {
                     autoFocus
                   />
                 ) : (
-                  <span>{list.title}</span>
+                  <span onClick={() => history.push(`/lists/${list.id}/todos`)}>
+                    {list.title}
+                  </span>
                 )}
               </li>
             );
