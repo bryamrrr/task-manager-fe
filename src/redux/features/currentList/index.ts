@@ -30,10 +30,7 @@ const currentListState = createSlice({
     ) => {
       tasksAdapter.updateOne(state.tasks, payload);
     },
-    addTask: (
-      state,
-      { payload }: PayloadAction<{ id: string; title: string }>
-    ) => {
+    addTask: (state, { payload }: PayloadAction<Task>) => {
       tasksAdapter.addOne(state.tasks, payload);
     },
     removeTask: (state, { payload }: PayloadAction<string>) => {
