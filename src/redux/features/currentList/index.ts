@@ -10,6 +10,7 @@ const tasksAdapter = createEntityAdapter<Task>();
 
 const initialState = {
   id: '',
+  title: '',
   tasks: tasksAdapter.getInitialState(),
 };
 
@@ -19,9 +20,10 @@ const currentListState = createSlice({
   reducers: {
     setCurrentList: (
       state,
-      { payload }: PayloadAction<{ id: string; tasks: Task[] }>
+      { payload }: PayloadAction<{ id: string; title: string; tasks: Task[] }>
     ) => {
       state.id = payload.id;
+      state.title = payload.title;
       tasksAdapter.setAll(state.tasks, payload.tasks);
     },
     updateTask: (
@@ -45,5 +47,7 @@ export const { setCurrentList, updateTask, addTask, removeTask } =
 export const tasksSelectors = tasksAdapter.getSelectors<AppState>(
   (state) => state.currentList.tasks
 );
+
+export const getCurrentListTitle = (state: AppState) => state.currentList.title;
 
 export default currentListState.reducer;

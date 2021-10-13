@@ -10,7 +10,10 @@ import {
 import { Task } from '../../types';
 import createTask from '../../api/mutations/createTask';
 import styled from 'styled-components';
-import StyledButton from '../../components/formControls/StyledButton';
+import {
+  StyledButton,
+  StyledTransparentTextInput,
+} from '../../components/formControls';
 
 const StyledEditingTaskWrapper = styled.div`
   background-color: #3d3d3d;
@@ -21,25 +24,6 @@ const StyledEditingTaskWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-`;
-
-const StyledTextInput = styled.input`
-  border: 1px solid
-    ${({ value, theme }) => (value === '' ? theme.error : 'transparent')};
-  font-size: 15px;
-  margin-left: -2px;
-
-  &,
-  &:focus {
-    background-color: transparent;
-    color: ${({ theme }) => theme.text};
-    caret-color: ${({ theme }) => theme.text};
-    font-family: ${({ theme }) => theme.primaryFont};
-    outline-width: 0;
-  }
-  &:focus {
-    border-color: transparent;
   }
 `;
 
@@ -129,7 +113,7 @@ const EditingTask = ({ task, setEditingId }: EditingTaskProps) => {
   return (
     <StyledEditingTaskWrapper>
       <form onSubmit={handleSubmit}>
-        <StyledTextInput
+        <StyledTransparentTextInput
           type="text"
           value={task.title}
           onChange={handleChange}

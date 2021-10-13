@@ -8,8 +8,8 @@ import {
   setCurrentList,
   tasksSelectors,
   addTask,
+  getCurrentListTitle,
 } from '../../redux/features/currentList';
-import { listsSelectors } from '../../redux/features/lists';
 import { useAppSelector, useDispatch } from '../../redux/hooks';
 import EditingTask from './EditingTask';
 import ReadModeTask from './ReadModeTask';
@@ -17,16 +17,16 @@ import ReadModeTask from './ReadModeTask';
 const Tasks = () => {
   const dispatch = useDispatch();
   const { listId } = useParams<{ listId: string }>();
+  const listTitle = useAppSelector(getCurrentListTitle);
   const tasks = useAppSelector(tasksSelectors.selectAll);
 
-  const listData = useAppSelector((state) =>
-    listsSelectors.selectById(state, listId)
-  );
   const [editingId, setEditingId] = useState<string | undefined>();
 
-  const listQuery = useQuery('getList', () => getList(listId), {
+  const listQuery = useQuery(`getList${listId}`, () => getList(listId), {
     onSuccess: (data) =>
-      dispatch(setCurrentList({ id: listId, tasks: data.tasks! })),
+      dispatch(
+        setCurrentList({ id: listId, title: data.title, tasks: data.tasks! })
+      ),
   });
 
   const handleAddTask = () => {
@@ -46,7 +46,7 @@ const Tasks = () => {
 
   return (
     <>
-      {listData?.title && <h1>{listData?.title}</h1>}
+      <h1>{listTitle}</h1>
       {listQuery.isLoading && <p>Getting tasks...</p>}
       {hasZeroItems && <p>No tasks. Create one.</p>}
       {hasItems && (
