@@ -31,4 +31,15 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
   }
+
+  a {
+    color: ${({ theme }) => theme.link};
+    &:visited {
+      color: ${({ theme }) => theme.link};
+    }
+    &:hover {
+      opacity: 0.9;
+      text-decoration: none;
+    }
+  }
 `;

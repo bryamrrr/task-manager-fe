@@ -52,7 +52,7 @@ const StyledIconWrapper = styled.div`
   display: flex;
   height: 30px;
   justify-content: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.6rem;
   width: 30px;
 `;
 
