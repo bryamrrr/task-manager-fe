@@ -24,7 +24,6 @@ function Lists() {
 
   const newListMutation = useMutation('newList', createList, {
     onSuccess: (list) => {
-      console.log({ respnse: list });
       dispatch(removeList('newId'));
       dispatch(addList(list));
     },

@@ -1,5 +1,5 @@
 import Lists from '../../pages/Lists';
-import Todos from '../../pages/Todos';
+import Todos from '../../pages/Tasks';
 
 const routes = [
   {

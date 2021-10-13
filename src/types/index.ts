@@ -1,3 +1,4 @@
-import { List } from './lists';
+import { List } from './List';
+import { Task } from './Task';
 
-export type { List };
+export type { List, Task };
