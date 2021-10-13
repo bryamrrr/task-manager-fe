@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
 import getList from '../../api/queries/getList';
+import StyledLinkButton from '../../components/formControls/StyledLinkButton';
 import {
   setCurrentList,
   tasksSelectors,
@@ -29,7 +31,13 @@ const Tasks = () => {
 
   const handleAddTask = () => {
     const newTaskId = 'newId';
-    dispatch(addTask({ id: newTaskId, title: '', due_date: '' }));
+    dispatch(
+      addTask({
+        id: newTaskId,
+        title: '',
+        due_date: dayjs().add(1, 'day').format('YYYY-MM-DD'),
+      })
+    );
     setEditingId(newTaskId);
   };
 
@@ -38,7 +46,7 @@ const Tasks = () => {
 
   return (
     <>
-      <h1>Tasks in {listData?.title}</h1>
+      {listData?.title && <h1>{listData?.title}</h1>}
       {listQuery.isLoading && <p>Getting tasks...</p>}
       {hasZeroItems && <p>No tasks. Create one.</p>}
       {hasItems && (
@@ -47,7 +55,7 @@ const Tasks = () => {
             return (
               <li key={task.id}>
                 {editingId === task.id ? (
-                  <EditingTask task={task} />
+                  <EditingTask task={task} setEditingId={setEditingId} />
                 ) : (
                   <ReadModeTask task={task} />
                 )}
@@ -56,7 +64,11 @@ const Tasks = () => {
           })}
         </ul>
       )}
-      <button onClick={handleAddTask}>Add task</button>
+      {!editingId && (
+        <StyledLinkButton onClick={handleAddTask}>
+          + Add a task
+        </StyledLinkButton>
+      )}
     </>
   );
 };
