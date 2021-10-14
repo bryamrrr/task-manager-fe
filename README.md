@@ -2,6 +2,8 @@
 
 A TODO-like client app made with TS, React and Redux.
 
+https://www.loom.com/embed/7f13cd3db4a34b45a96146abb4d7f74e
+
 ## Development
 
 To run the project locally:
