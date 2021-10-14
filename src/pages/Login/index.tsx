@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -9,6 +10,7 @@ import {
   StyledTextInput,
 } from '../../components/formControls';
 import useUserFormValues from '../../components/hooks/useUserFormValues';
+import StyledErrorMessage from '../../components/StyledErrorMessage';
 import { updateCurrentUser } from '../../redux/features/currentUser';
 import { setAuthData } from '../../utils/storage';
 
@@ -21,10 +23,12 @@ function Login() {
   const dispatch = useDispatch();
   const { email, password, onChangeEmail, onChangePassword } =
     useUserFormValues();
+  const [error, setError] = useState<string>('');
   const loginUserMutation = useMutation(loginUser);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError('');
     if (!email || !password) return;
     loginUserMutation.mutate(
       { email, password },
@@ -32,6 +36,9 @@ function Login() {
         onSuccess: ({ authentication_token, email }) => {
           setAuthData({ token: authentication_token, email });
           dispatch(updateCurrentUser(email));
+        },
+        onError: () => {
+          setError('An error ocurred.');
         },
       }
     );
@@ -58,6 +65,7 @@ function Login() {
           {loginUserMutation.isLoading ? 'Loading...' : 'Login'}
         </StyledButton>
       </StyledForm>
+      {error && <StyledErrorMessage>{error}</StyledErrorMessage>}
       <StyledText>
         Not a user yet? <Link to="/register">Sign up</Link>
       </StyledText>
