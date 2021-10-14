@@ -7,8 +7,9 @@ export const GlobalStyles = createGlobalStyle`
     font-family:${({ theme }) => theme.primaryFont};
     transition: all 0.50s linear;
     padding: 1rem;
+    position: relative;
     margin: 0 auto;
-    max-width: 500px;
+    max-width: 480px;
   }
 
   h1, h2, h3, h4, h5, h6 {

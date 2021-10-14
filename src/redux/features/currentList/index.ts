@@ -6,7 +6,9 @@ import {
 import { Task } from '../../../types';
 import { AppState } from '../../store';
 
-const tasksAdapter = createEntityAdapter<Task>();
+const tasksAdapter = createEntityAdapter<Task>({
+  sortComparer: (a, b) => a.id - b.id,
+});
 
 const initialState = {
   id: '',
@@ -28,14 +30,14 @@ const currentListState = createSlice({
     },
     updateTask: (
       state,
-      { payload }: PayloadAction<{ id: string; changes: Partial<Task> }>
+      { payload }: PayloadAction<{ id: number; changes: Partial<Task> }>
     ) => {
       tasksAdapter.updateOne(state.tasks, payload);
     },
     addTask: (state, { payload }: PayloadAction<Task>) => {
       tasksAdapter.addOne(state.tasks, payload);
     },
-    removeTask: (state, { payload }: PayloadAction<string>) => {
+    removeTask: (state, { payload }: PayloadAction<number>) => {
       tasksAdapter.removeOne(state.tasks, payload);
     },
   },

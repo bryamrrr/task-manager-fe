@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
-import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import createList from '../../api/mutations/createList';
 import getLists from '../../api/queries/getLists';
 import { StyledTransparentTextInput } from '../../components/formControls';
 import StyledLinkButton from '../../components/formControls/StyledLinkButton';
+import useGoToPages from '../../components/hooks/useGoToPages';
 import {
   addList,
   addLists,
@@ -50,10 +50,13 @@ const StyledIconWrapper = styled.div`
   border-radius: 50%;
   color: ${({ theme }) => theme.secondaryText};
   display: flex;
-  height: 30px;
+  height: 25px;
   justify-content: center;
   margin-bottom: 0.6rem;
-  width: 30px;
+  width: 25px;
+  span {
+    font-size: 0.8rem;
+  }
 `;
 
 const StyledListTasksNumber = styled.div`
@@ -66,7 +69,7 @@ const StyledListTasksNumber = styled.div`
 
 function Lists() {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const { goToTasks } = useGoToPages();
   const lists = useAppSelector(listsSelectors.selectAll);
   const [editingId, setEditingId] = useState<string | undefined>();
 
@@ -120,10 +123,7 @@ function Lists() {
             };
 
             return (
-              <StyledListCard
-                key={list.id}
-                onClick={() => history.push(`/lists/${list.id}/todos`)}
-              >
+              <StyledListCard key={list.id} onClick={() => goToTasks(list.id)}>
                 <StyledListTitleWrapper>
                   <StyledIconWrapper>
                     <span>{list.title.substr(0, 1)}</span>

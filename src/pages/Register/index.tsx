@@ -1,16 +1,16 @@
 import React from 'react';
 import { useMutation } from 'react-query';
-import { useHistory } from 'react-router-dom';
 import createUser from '../../api/mutations/createUser';
 import {
   StyledButton,
   StyledForm,
   StyledTextInput,
 } from '../../components/formControls';
+import useGoToPages from '../../components/hooks/useGoToPages';
 import useUserFormValues from '../../components/hooks/useUserFormValues';
 
 function Register() {
-  const history = useHistory();
+  const { goToLogin } = useGoToPages();
   const { email, password, onChangeEmail, onChangePassword } =
     useUserFormValues();
 
@@ -20,7 +20,7 @@ function Register() {
     e.preventDefault();
     if (!email || !password) return;
     createUserMutation.mutate({ email, password });
-    history.push('/login');
+    goToLogin();
   };
 
   return (

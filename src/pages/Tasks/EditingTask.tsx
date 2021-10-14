@@ -12,6 +12,7 @@ import createTask from '../../api/mutations/createTask';
 import styled from 'styled-components';
 import {
   StyledButton,
+  StyledInputDate,
   StyledTransparentTextInput,
 } from '../../components/formControls';
 
@@ -43,17 +44,6 @@ const StyledDateWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const StyledInputDateTime = styled.input`
-  background-color: #52555d;
-  border: none;
-  border-radius: 7px;
-  color: ${({ theme }) => theme.text};
-  padding: 0.15rem 0.25rem;
-  &::-webkit-calendar-picker-indicator {
-    filter: invert(0.65);
-  }
-`;
-
 interface EditingTaskProps {
   task: Task;
   setEditingId: (value: undefined) => void;
@@ -63,15 +53,16 @@ const EditingTask = ({ task, setEditingId }: EditingTaskProps) => {
   const dispatch = useDispatch();
   const { listId } = useParams<{ listId: string }>();
   const newTask = useAppSelector((state) =>
-    tasksSelectors.selectById(state, 'newId')
+    tasksSelectors.selectById(state, Infinity)
   );
   const newTaskMutation = useMutation(
     'newTask',
     (task: Task) => createTask(listId, task),
     {
       onSuccess: (task) => {
-        dispatch(removeTask('newId'));
+        dispatch(removeTask(Infinity));
         dispatch(addTask(task));
+        setEditingId(undefined);
       },
     }
   );
@@ -84,7 +75,7 @@ const EditingTask = ({ task, setEditingId }: EditingTaskProps) => {
   };
 
   const handleCancel = () => {
-    dispatch(removeTask('newId'));
+    dispatch(removeTask(Infinity));
     setEditingId(undefined);
   };
 
@@ -121,7 +112,7 @@ const EditingTask = ({ task, setEditingId }: EditingTaskProps) => {
         />
         <StyledDateWrapper>
           <span>Due date: </span>
-          <StyledInputDateTime
+          <StyledInputDate
             type="date"
             value={task.due_date}
             onChange={handleChangeDate}

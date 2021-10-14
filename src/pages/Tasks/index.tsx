@@ -13,14 +13,30 @@ import {
 import { useAppSelector, useDispatch } from '../../redux/hooks';
 import EditingTask from './EditingTask';
 import ReadModeTask from './ReadModeTask';
+import useGoToPages from '../../components/hooks/useGoToPages';
+import styled from 'styled-components';
+
+const StyledButtonsWrapper = styled.div<{ sortByDate: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-right: 1.65rem;
+
+  ${({ sortByDate, theme }) =>
+    sortByDate
+      ? `button:nth-child(2) { color: ${theme.secondaryText} !important; }`
+      : ''}
+`;
 
 const Tasks = () => {
   const dispatch = useDispatch();
+  const { goToLists } = useGoToPages();
   const { listId } = useParams<{ listId: string }>();
   const listTitle = useAppSelector(getCurrentListTitle);
   const tasks = useAppSelector(tasksSelectors.selectAll);
+  const [sortByDate, setSortByDate] = useState<boolean>(false);
 
-  const [editingId, setEditingId] = useState<string | undefined>();
+  const [editingId, setEditingId] = useState<number | undefined>();
 
   const listQuery = useQuery(`getList${listId}`, () => getList(listId), {
     onSuccess: (data) =>
@@ -30,7 +46,7 @@ const Tasks = () => {
   });
 
   const handleAddTask = () => {
-    const newTaskId = 'newId';
+    const newTaskId = Infinity;
     dispatch(
       addTask({
         id: newTaskId,
@@ -46,12 +62,16 @@ const Tasks = () => {
 
   return (
     <>
+      <StyledLinkButton onClick={goToLists}>Back</StyledLinkButton>
       <h1>{listTitle}</h1>
       {listQuery.isLoading && <p>Getting tasks...</p>}
       {hasZeroItems && <p>No tasks. Create one.</p>}
       {hasItems && (
         <ul>
-          {tasks?.map((task) => {
+          {(sortByDate
+            ? [...tasks]?.sort((a, b) => dayjs(a.due_date).diff(b.due_date))
+            : tasks
+          ).map((task) => {
             return (
               <li key={task.id}>
                 {editingId === task.id ? (
@@ -64,10 +84,16 @@ const Tasks = () => {
           })}
         </ul>
       )}
+
       {!editingId && (
-        <StyledLinkButton onClick={handleAddTask}>
-          + Add a task
-        </StyledLinkButton>
+        <StyledButtonsWrapper sortByDate={sortByDate}>
+          <StyledLinkButton onClick={handleAddTask}>
+            + Add a task
+          </StyledLinkButton>
+          <StyledLinkButton onClick={() => setSortByDate(!sortByDate)}>
+            ↓ Sort by date
+          </StyledLinkButton>
+        </StyledButtonsWrapper>
       )}
     </>
   );

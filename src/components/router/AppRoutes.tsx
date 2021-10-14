@@ -5,6 +5,7 @@ import Login from '../../pages/Login';
 import Register from '../../pages/Register';
 import { useAppSelector } from '../../redux/hooks';
 import { getAuthData } from '../../utils/storage';
+import Logout from '../Logout';
 import PrivateRoute from './PrivateRoute';
 import ProtectedRoutes from './ProtectedRoutes';
 import PublicRoute from './PublicRoute';
@@ -20,10 +21,11 @@ function AppRoutes() {
       api.defaults.headers['X-User-Token'] = authData.token;
       api.defaults.headers['X-User-Email'] = authData.email;
     }
-  }, [currentUser.email]);
+  }, [currentUser]);
 
   return (
     <Router>
+      {isAuthenticated && <Logout />}
       <Switch>
         <PublicRoute path="/login" isAuthenticated={isAuthenticated}>
           <Login />
