@@ -41,8 +41,15 @@ function Login() {
     <>
       <h1>Sign in</h1>
       <StyledForm onSubmit={handleSubmit}>
-        <StyledTextInput type="text" value={email} onChange={onChangeEmail} />
         <StyledTextInput
+          data-testid="emailInput"
+          placeholder="Eg. john@gmail.com"
+          type="text"
+          value={email}
+          onChange={onChangeEmail}
+        />
+        <StyledTextInput
+          data-testid="passwordInput"
           type="password"
           value={password}
           onChange={onChangePassword}

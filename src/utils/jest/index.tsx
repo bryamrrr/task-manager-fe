@@ -3,6 +3,7 @@ import { render as rtlRender } from '@testing-library/react';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { reducers } from '../../redux/store';
 
 function render(
@@ -17,11 +18,13 @@ function render(
 
   function Wrapper({ children }: { children: React.ReactChild }) {
     return (
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
-      </Provider>
+      <Router>
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            {children}
+          </QueryClientProvider>
+        </Provider>
+      </Router>
     );
   }
 
