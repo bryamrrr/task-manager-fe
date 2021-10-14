@@ -118,9 +118,7 @@ function Lists() {
               dispatch(
                 updateList({
                   id: list.id,
-                  changes: {
-                    title: e.target.value,
-                  },
+                  changes: { title: e.target.value },
                 })
               );
             };
