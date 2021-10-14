@@ -5,6 +5,7 @@ import createList from '../../api/mutations/createList';
 import getLists from '../../api/queries/getLists';
 import { StyledTransparentTextInput } from '../../components/formControls';
 import StyledLinkButton from '../../components/formControls/StyledLinkButton';
+import useEnterKey from '../../components/hooks/useEnterKey';
 import useGoToPages from '../../components/hooks/useGoToPages';
 import {
   addList,
@@ -94,11 +95,13 @@ function Lists() {
     const text = e.target.value.trim();
     if (text === '') {
       dispatch(removeList('newId'));
-      setEditingId(undefined);
     } else {
       newListMutation.mutate(text);
     }
+    setEditingId(undefined);
   };
+
+  useEnterKey({ callback: handleBlurNewList, enabled: !!editingId });
 
   const hasZeroItems = !listsQuery.isLoading && lists.length === 0;
   const hasItems = !!(!listsQuery.isLoading && lists.length > 0);
@@ -115,9 +118,7 @@ function Lists() {
               dispatch(
                 updateList({
                   id: list.id,
-                  changes: {
-                    title: e.target.value,
-                  },
+                  changes: { title: e.target.value },
                 })
               );
             };
@@ -130,6 +131,7 @@ function Lists() {
                   </StyledIconWrapper>
                   {editingId === list.id ? (
                     <StyledTransparentTextInput
+                      data-testid="newListInput"
                       type="text"
                       value={list.title}
                       onChange={handleChange}
