@@ -131,6 +131,7 @@ function Lists() {
                   </StyledIconWrapper>
                   {editingId === list.id ? (
                     <StyledTransparentTextInput
+                      data-testid="newListInput"
                       type="text"
                       value={list.title}
                       onChange={handleChange}
