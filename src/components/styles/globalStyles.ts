@@ -7,8 +7,9 @@ export const GlobalStyles = createGlobalStyle`
     font-family:${({ theme }) => theme.primaryFont};
     transition: all 0.50s linear;
     padding: 1rem;
+    position: relative;
     margin: 0 auto;
-    max-width: 500px;
+    max-width: 480px;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -30,5 +31,16 @@ export const GlobalStyles = createGlobalStyle`
     list-style-type: none;
     margin: 0;
     padding: 0;
+  }
+
+  a {
+    color: ${({ theme }) => theme.link};
+    &:visited {
+      color: ${({ theme }) => theme.link};
+    }
+    &:hover {
+      opacity: 0.9;
+      text-decoration: none;
+    }
   }
 `;

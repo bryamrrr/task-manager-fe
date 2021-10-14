@@ -9,7 +9,7 @@ import store from './redux/store';
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { staleTime: Infinity },
+    queries: { cacheTime: 0, staleTime: Infinity },
   },
 });
 

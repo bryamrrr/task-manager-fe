@@ -10,7 +10,11 @@ import {
 import { Task } from '../../types';
 import createTask from '../../api/mutations/createTask';
 import styled from 'styled-components';
-import StyledButton from '../../components/formControls/StyledButton';
+import {
+  StyledButton,
+  StyledInputDate,
+  StyledTransparentTextInput,
+} from '../../components/formControls';
 
 const StyledEditingTaskWrapper = styled.div`
   background-color: #3d3d3d;
@@ -21,25 +25,6 @@ const StyledEditingTaskWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-`;
-
-const StyledTextInput = styled.input`
-  border: 1px solid
-    ${({ value, theme }) => (value === '' ? theme.error : 'transparent')};
-  font-size: 15px;
-  margin-left: -2px;
-
-  &,
-  &:focus {
-    background-color: transparent;
-    color: ${({ theme }) => theme.text};
-    caret-color: ${({ theme }) => theme.text};
-    font-family: ${({ theme }) => theme.primaryFont};
-    outline-width: 0;
-  }
-  &:focus {
-    border-color: transparent;
   }
 `;
 
@@ -59,17 +44,6 @@ const StyledDateWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const StyledInputDateTime = styled.input`
-  background-color: #52555d;
-  border: none;
-  border-radius: 7px;
-  color: ${({ theme }) => theme.text};
-  padding: 0.15rem 0.25rem;
-  &::-webkit-calendar-picker-indicator {
-    filter: invert(0.65);
-  }
-`;
-
 interface EditingTaskProps {
   task: Task;
   setEditingId: (value: undefined) => void;
@@ -79,15 +53,16 @@ const EditingTask = ({ task, setEditingId }: EditingTaskProps) => {
   const dispatch = useDispatch();
   const { listId } = useParams<{ listId: string }>();
   const newTask = useAppSelector((state) =>
-    tasksSelectors.selectById(state, 'newId')
+    tasksSelectors.selectById(state, Infinity)
   );
   const newTaskMutation = useMutation(
     'newTask',
     (task: Task) => createTask(listId, task),
     {
       onSuccess: (task) => {
-        dispatch(removeTask('newId'));
+        dispatch(removeTask(Infinity));
         dispatch(addTask(task));
+        setEditingId(undefined);
       },
     }
   );
@@ -100,7 +75,7 @@ const EditingTask = ({ task, setEditingId }: EditingTaskProps) => {
   };
 
   const handleCancel = () => {
-    dispatch(removeTask('newId'));
+    dispatch(removeTask(Infinity));
     setEditingId(undefined);
   };
 
@@ -129,7 +104,7 @@ const EditingTask = ({ task, setEditingId }: EditingTaskProps) => {
   return (
     <StyledEditingTaskWrapper>
       <form onSubmit={handleSubmit}>
-        <StyledTextInput
+        <StyledTransparentTextInput
           type="text"
           value={task.title}
           onChange={handleChange}
@@ -137,7 +112,7 @@ const EditingTask = ({ task, setEditingId }: EditingTaskProps) => {
         />
         <StyledDateWrapper>
           <span>Due date: </span>
-          <StyledInputDateTime
+          <StyledInputDate
             type="date"
             value={task.due_date}
             onChange={handleChangeDate}

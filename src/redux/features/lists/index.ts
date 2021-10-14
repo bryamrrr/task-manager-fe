@@ -9,7 +9,7 @@ const listsState = createSlice({
   initialState: listsAdapter.getInitialState(),
   reducers: {
     addList: listsAdapter.addOne,
-    addLists: listsAdapter.addMany,
+    addLists: listsAdapter.setAll,
     updateList: listsAdapter.updateOne,
     removeList: listsAdapter.removeOne,
   },

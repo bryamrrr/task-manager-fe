@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { Task } from '../../../types';
 import api from '../../index';
 
-const toggleTask = async (taskId: string): Promise<Task> => {
+const toggleTask = async (taskId: number): Promise<Task> => {
   try {
     const response = await api.post<undefined, AxiosResponse>(
       `/tasks/${taskId}/toggle`

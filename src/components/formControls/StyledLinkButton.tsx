@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 const StyledLinkButton = styled.button`
-  display: inline-block;
+  align-items: center;
+  display: inline-flex;
   border: none;
   cursor: pointer;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;

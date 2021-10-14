@@ -8,7 +8,7 @@ const routes = [
     exact: true,
   },
   {
-    path: 'lists/:listId/todos',
+    path: 'lists/:listId/tasks',
     component: Todos,
     exact: true,
   },
