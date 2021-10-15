@@ -14,13 +14,17 @@ function PrivateRoute({
   return (
     <Route
       {...props}
-      render={({ location }) =>
-        isAuthenticated ? (
-          children
+      render={({ location }) => {
+        return isAuthenticated ? (
+          location.pathname !== '/' ? (
+            children
+          ) : (
+            <Redirect to={{ pathname: '/lists', state: { from: location } }} />
+          )
         ) : (
           <Redirect to={{ pathname: '/login', state: { from: location } }} />
-        )
-      }
+        );
+      }}
     />
   );
 }
